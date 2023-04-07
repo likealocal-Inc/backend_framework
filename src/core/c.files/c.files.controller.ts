@@ -14,7 +14,7 @@ import {
   HttpException,
 } from '@nestjs/common';
 import { createReadStream } from 'fs';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 import { CFilesService } from './c.files.service';
@@ -35,6 +35,7 @@ export class CFilesController {
    * @returns
    */
   @Post('upload')
+  @ApiCreatedResponse({ type: CFileEntity, isArray: false })
   @UseInterceptors(FileInterceptor('file', uploadImage)) // 업로드 설정
   async upload(
     @UploadedFile(
@@ -85,7 +86,8 @@ export class CFilesController {
   // }
 
   @Delete(':id')
+  @ApiCreatedResponse({ type: CFileEntity, isArray: false })
   remove(@Param('id') id: string) {
-    return this.cFilesService.remove(+id);
+    return HttpUtils.makeAPIResponse(true, this.cFilesService.remove(+id));
   }
 }

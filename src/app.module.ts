@@ -7,6 +7,7 @@ import { join } from 'path';
 import { PrismaModule } from './config/core/prisma/prisma.module';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { LoggingInterceptor } from './config/core/interceptor/logger.interceptor';
+import { CAuthModule } from './core/c.auth/c.auth.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { LoggingInterceptor } from './config/core/interceptor/logger.interceptor
     ConfigModule.forRoot({ envFilePath: [`.env.${process.env.NODE_ENV}`] }),
     PrismaModule,
     CFilesModule,
+    CAuthModule,
   ],
   controllers: [],
   providers: [
