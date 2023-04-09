@@ -6,47 +6,45 @@ import {
   IsEmpty,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
 } from 'class-validator';
 
 export class CreateCUserDto {
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
   name: string;
 
   @ApiProperty()
   @IsEmail()
-  @IsNotEmpty()
   email: string;
 
   @ApiProperty()
   @IsString()
-  @IsNotEmpty()
   password: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsString()
-  @IsEmpty()
-  phone: string;
+  @IsOptional()
+  phone?: string;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsString()
-  @IsEmpty()
-  gender: Gender;
+  @IsOptional()
+  gender?: Gender;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsBoolean()
-  @IsEmpty()
+  @IsOptional()
   isActive: boolean;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsNumber()
-  @IsEmpty()
-  profileImgId: number;
+  @IsOptional()
+  profileImgId?: number;
 
-  @ApiProperty()
+  @ApiProperty({ required: false })
   @IsString()
-  @IsEmpty()
-  role: Role;
+  @IsOptional()
+  role?: Role;
 }

@@ -33,7 +33,7 @@ export const DefaultConfig = {
       error: {
         path: './files/error',
         name: 'ERROR',
-        ext: 'log',
+        ext: 'err',
         getLogFileName: async (name: string): Promise<string> => {
           return `${DefaultConfig.files.log.error.name}_${name}.${DefaultConfig.files.log.error.ext}`;
         },
@@ -48,5 +48,14 @@ export const DefaultConfig = {
   },
   security: {
     key: 'likealocalkeysecury',
+  },
+  redis: {
+    // 레디스 접속 주소
+    URL: () => `redis://${process.env.REDIS_URL}:${process.env.REDIS_PORT}`,
+    KEY: process.env.SESSION_KEY,
+  },
+  session: {
+    KEY: process.env.SESSION_KEY,
+    expireTime: process.env.SESSION_TIME,
   },
 };

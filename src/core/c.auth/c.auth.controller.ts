@@ -1,44 +1,39 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Patch,
-  Param,
-  Delete,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
 import { CAuthService } from './c.auth.service';
-import { CreateCAuthDto } from './dto/create-c.auth.dto';
-import { UpdateCAuthDto } from './dto/update-c.auth.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { CUserEntity } from '../c.user/entities/c.user.entity';
+import { HttpUtils } from 'src/libs/core/utils/http.utils';
+import { CreateCUserDto } from '../c.user/dto/create-c.user.dto';
+import { EmailLoginDto } from './dto/email.login.dto';
+import { Role } from '@prisma/client';
 
 @ApiTags('Auth Module')
 @Controller('c.auth')
 export class CAuthController {
   constructor(private readonly cAuthService: CAuthService) {}
 
-  @Post()
-  create(@Body() createCAuthDto: CreateCAuthDto) {
-    return this.cAuthService.create(createCAuthDto);
+  @ApiOperation({ summary: '이메일 회원가입' })
+  @ApiCreatedResponse({ type: CUserEntity })
+  @Post('/join/email')
+  async joinEmail(@Body() createJoinDto: CreateCUserDto) {
+    const res = await this.cAuthService.joinEmail(createJoinDto);
+    return await HttpUtils.makeAPIResponse(true, res);
   }
 
-  @Get()
-  findAll() {
-    return this.cAuthService.findAll();
+  @ApiOperation({ summary: '이메일 로그인' })
+  @ApiCreatedResponse({ type: CUserEntity })
+  @Post('/login/email')
+  async loginEmail(@Body() emailLoginDto: EmailLoginDto) {
+    return await HttpUtils.makeAPIResponse(
+      true,
+      await this.cAuthService.loginEmail(emailLoginDto, [Role.USER]),
+    );
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.cAuthService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCAuthDto: UpdateCAuthDto) {
-    return this.cAuthService.update(+id, updateCAuthDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.cAuthService.remove(+id);
-  }
+  // @ApiOperation({ summary: 'SNS 회원가입' })
+  // @ApiCreatedResponse({ type: CUserEntity })
+  // @Post('/join/sns')
+  // async joinSns(@Body() createJoinDto: CreateJoinEmailDto) {
+  //   return this.cAuthService.join(createJoinDto);
+  // }
 }

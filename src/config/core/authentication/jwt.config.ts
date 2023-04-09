@@ -1,5 +1,5 @@
 import { DefaultConfig } from 'src/config/default.config';
 
-export const jwtConfig = {
+export const JwtConfig = {
   secrete: DefaultConfig.auth.jwt.secrete,
 };

@@ -1,6 +1,9 @@
+import { Injectable } from '@nestjs/common';
+
 /**
  * 파일 처리 유틸
  */
+@Injectable()
 export class Files {
   fs: any;
 

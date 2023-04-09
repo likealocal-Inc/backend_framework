@@ -2,15 +2,16 @@ import {
   Catch,
   ArgumentsHost,
   HttpException,
-  Logger,
   ExceptionFilter,
+  Logger,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { HttpUtils } from 'src/libs/core/utils/http.utils';
+import { LogFiles } from '../files/log.files';
 
-@Catch(HttpException)
+@Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
-  private readonly logger = new Logger(HttpExceptionFilter.name);
+  constructor(private logger: Logger) {}
 
   catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
@@ -19,14 +20,17 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const status = exception.getStatus();
     const res: any = exception.getResponse();
 
-    response.status(200).json(
-      HttpUtils.makeAPIResponse(false, {
-        statusCode: status,
-        timestamp: new Date().toISOString(),
-        path: request.url,
-        code: res.code ? res.code : res,
-        description: res.message ? res.message : res,
-      }),
-    );
+    const errData = {
+      statusCode: status,
+      timestamp: new Date().toISOString(),
+      path: request.url,
+      code: res.code ? res.code : res,
+      description: res.message ? res.message : res,
+    };
+    const data = HttpUtils.makeAPIResponse(false, errData);
+
+    new LogFiles().save(JSON.stringify(errData));
+
+    response.status(500).json(data);
   }
 }

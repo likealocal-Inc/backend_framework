@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  HttpStatus,
 } from '@nestjs/common';
 import { CUserService } from './c.user.service';
 import { CreateCUserDto } from './dto/create-c.user.dto';
@@ -13,6 +14,8 @@ import { UpdateCUserDto } from './dto/update-c.user.dto';
 import { APIResponseObj, HttpUtils } from 'src/libs/core/utils/http.utils';
 import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { CUserEntity } from './entities/c.user.entity';
+import { CustomException } from 'src/config/core/exceptions/custom.exception';
+import { ExceptionCodeList } from 'src/config/core/exceptions/exception.code';
 
 /**
  * 사용자
@@ -22,15 +25,25 @@ import { CUserEntity } from './entities/c.user.entity';
 export class CUserController {
   constructor(private readonly cUserService: CUserService) {}
 
+  @Get()
+  async test() {
+    throw new CustomException(
+      ExceptionCodeList.COMMON.WRONG_REQUEST,
+      HttpStatus.BAD_REQUEST,
+    );
+  }
+
   @Post()
   @ApiCreatedResponse({ type: CUserEntity, isArray: false })
   async create(
     @Body() createCUserDto: CreateCUserDto,
   ): Promise<APIResponseObj> {
-    return HttpUtils.makeAPIResponse(
-      true,
-      this.cUserService.create(createCUserDto),
-    );
+    try {
+      const res = await this.cUserService.create(createCUserDto);
+      console.log(res);
+      console.log('$$$');
+      return HttpUtils.makeAPIResponse(true, res);
+    } catch (err) {}
   }
 
   @Get()
