@@ -4,7 +4,7 @@ export const StringUtils = {
    * @param str
    * @returns
    */
-  isNotEmpty: (str: string) => {
+  isNotEmpty: (str: string): boolean => {
     if (str === undefined || str === null || str.trim() === '') {
       return false;
     }
@@ -15,7 +15,7 @@ export const StringUtils = {
    * @param str
    * @returns
    */
-  isEmpty: (str: string) => {
+  isEmpty: (str: string): boolean => {
     return !StringUtils.isNotEmpty(str);
   },
 };

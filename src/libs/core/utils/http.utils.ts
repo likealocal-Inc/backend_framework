@@ -13,7 +13,7 @@ export const HttpUtils = {
    * @param data
    * @returns
    */
-  makeAPIResponse: (ok, data = null): APIResponseObj => {
+  makeAPIResponse: (ok: boolean, data = null): APIResponseObj => {
     return { ok, data };
   },
 };

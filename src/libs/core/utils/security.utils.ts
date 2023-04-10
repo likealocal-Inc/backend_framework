@@ -62,7 +62,7 @@ export const SecurityUtils = {
    * @param data 원본데이터
    * @returns
    */
-  compareBcryptData: async (hash, data): Promise<boolean> => {
+  compareBcryptData: async (hash: string, data: string): Promise<boolean> => {
     return await bcrypt.compare(data, hash);
   },
 
