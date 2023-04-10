@@ -1,4 +1,4 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, CacheTTL } from '@nestjs/common';
 import { CAuthService } from './c.auth.service';
 import {
   ApiBearerAuth,
@@ -32,6 +32,7 @@ export class CAuthController {
   @ApiOperation({ summary: '이메일 로그인' })
   @ApiCreatedResponse({ type: CUserEntity })
   @CacheKey('JoinEmail')
+  @CacheTTL(10)
   @Post('/login/email')
   async loginEmail(
     @Body() emailLoginDto: EmailLoginDto,
