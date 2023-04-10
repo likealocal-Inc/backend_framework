@@ -10,7 +10,7 @@ import { DefaultConfig } from 'src/config/default.config';
     RedisModule.forRootAsync({
       useFactory: () => ({
         config: {
-          url: DefaultConfig.redis.URL(),
+          url: DefaultConfig.redis.getURL(),
         },
       }),
     }),

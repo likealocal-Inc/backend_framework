@@ -11,6 +11,7 @@ import { APIResponseObj, HttpUtils } from 'src/libs/core/utils/http.utils';
 import { CreateCUserDto } from '../c.user/dto/create-c.user.dto';
 import { EmailLoginDto } from './dto/email.login.dto';
 import { Role } from '@prisma/client';
+import { CacheKey } from '@nestjs/cache-manager';
 
 @ApiBearerAuth()
 @ApiTags('Auth Module')
@@ -30,6 +31,7 @@ export class CAuthController {
 
   @ApiOperation({ summary: '이메일 로그인' })
   @ApiCreatedResponse({ type: CUserEntity })
+  @CacheKey('JoinEmail')
   @Post('/login/email')
   async loginEmail(
     @Body() emailLoginDto: EmailLoginDto,

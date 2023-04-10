@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { CUserService } from '../c.user/c.user.service';
 import { PrismaService } from 'src/config/core/prisma/prisma.service';
 import { CreateCUserDto } from '../c.user/dto/create-c.user.dto';
@@ -100,32 +100,31 @@ export class CAuthService {
 
   async createToken(user: CUserEntity) {
     const payload = { email: user.email, id: user.id, role: user.role };
+    let token: string;
     try {
-      const token = this.jwtService.sign(payload, {
-        expiresIn: DefaultConfig.session.expireTime,
-      });
-
-      const resToken = await this.prisma.token.findUnique({
-        where: { userId: user.id },
-      });
-      if (!resToken) {
-        await this.prisma.token.upsert({
-          where: {
-            userId: user.id,
-          },
-          create: { userId: user.id, token },
-          update: { token },
-        });
-      } else {
-        await this.prisma.token.update({
-          where: { id: resToken.id },
-          data: { token },
-        });
-      }
-
-      return token;
+      token = await this.jwtService.signAsync(payload);
     } catch (err) {
+      console.log(err);
       throw new CustomException(ExceptionCodeList.AUTH.TOKEN_FAIL);
     }
+    const resToken = await this.prisma.token.findUnique({
+      where: { userId: user.id },
+    });
+    if (!resToken) {
+      await this.prisma.token.upsert({
+        where: {
+          userId: user.id,
+        },
+        create: { userId: user.id, token },
+        update: { token },
+      });
+    } else {
+      await this.prisma.token.update({
+        where: { id: resToken.id },
+        data: { token },
+      });
+    }
+
+    return token;
   }
 }
