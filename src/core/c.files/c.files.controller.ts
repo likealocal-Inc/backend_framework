@@ -23,6 +23,9 @@ import { uploadImage } from 'src/config/core/fileupload/fileupload.config';
 import { HttpUtils } from 'src/libs/core/utils/http.utils';
 import { DefaultConfig } from 'src/config/default.config';
 import { CFileEntity } from './entities/c.file.entity';
+import { CustomException } from 'src/config/core/exceptions/custom.exception';
+import { ExceptionCodeList } from 'src/config/core/exceptions/exception.code';
+import { AUTH_MUST } from 'src/config/core/decorators/auth.must/auth.must.decorator';
 
 @ApiTags('Files 처리')
 @Controller('c.files')
@@ -70,7 +73,7 @@ export class CFilesController {
     // 파일 아이디 확인
     const fileInfo: CFileEntity = await this.cFilesService.findOne(id);
     if (!fileInfo) {
-      throw new HttpException('File not found', HttpStatus.BAD_REQUEST);
+      throw new CustomException(ExceptionCodeList.FILE.FILE_NOT_FOUND);
     }
     const file = createReadStream(fileInfo.path);
     const fileName = encodeURIComponent(fileInfo.originalname);
@@ -84,7 +87,7 @@ export class CFilesController {
   // findOne(@Param('id') id: string) {
   //   return this.cFilesService.findOne(+id);
   // }
-
+  @AUTH_MUST()
   @Delete(':id')
   @ApiCreatedResponse({ type: CFileEntity, isArray: false })
   remove(@Param('id') id: string) {

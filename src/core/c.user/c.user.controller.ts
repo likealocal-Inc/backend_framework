@@ -12,52 +12,64 @@ import { CUserService } from './c.user.service';
 import { CreateCUserDto } from './dto/create-c.user.dto';
 import { UpdateCUserDto } from './dto/update-c.user.dto';
 import { APIResponseObj, HttpUtils } from 'src/libs/core/utils/http.utils';
-import { ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { CUserEntity } from './entities/c.user.entity';
-import { CustomException } from 'src/config/core/exceptions/custom.exception';
-import { ExceptionCodeList } from 'src/config/core/exceptions/exception.code';
+import { AUTH_MUST } from 'src/config/core/decorators/auth.must/auth.must.decorator';
 
 /**
  * 사용자
  */
+@ApiBearerAuth()
 @ApiTags('User Module')
 @Controller('c.user')
 export class CUserController {
   constructor(private readonly cUserService: CUserService) {}
 
-  @Get()
-  async test() {
-    throw new CustomException(
-      ExceptionCodeList.COMMON.WRONG_REQUEST,
-      HttpStatus.BAD_REQUEST,
-    );
-  }
-
+  /**
+   * 사용자 추가
+   * @param createCUserDto
+   * @returns
+   */
+  @AUTH_MUST()
   @Post()
   @ApiCreatedResponse({ type: CUserEntity, isArray: false })
   async create(
     @Body() createCUserDto: CreateCUserDto,
   ): Promise<APIResponseObj> {
-    try {
-      const res = await this.cUserService.create(createCUserDto);
-      console.log(res);
-      console.log('$$$');
-      return HttpUtils.makeAPIResponse(true, res);
-    } catch (err) {}
+    const res = await this.cUserService.create(createCUserDto);
+    return HttpUtils.makeAPIResponse(true, res);
   }
 
+  /**
+   * 사용자 전체 조회
+   * @returns
+   */
+  @AUTH_MUST()
   @Get()
   @ApiCreatedResponse({ type: CUserEntity, isArray: true })
   async findAll(): Promise<APIResponseObj> {
     return HttpUtils.makeAPIResponse(true, this.cUserService.findAll());
   }
 
+  /**
+   * 사용자 아이디 조회
+   * @param id
+   * @returns
+   */
+  @AUTH_MUST()
   @Get(':id')
   @ApiCreatedResponse({ type: CUserEntity, isArray: false })
   async findOne(@Param('id') id: string): Promise<APIResponseObj> {
     return HttpUtils.makeAPIResponse(true, this.cUserService.findOne(+id));
   }
 
+  /**
+   * 사용자 업데이트
+   * @param id
+   * @param updateCUserDto
+   * @returns
+   */
+  @AUTH_MUST()
   @Patch(':id')
   @ApiCreatedResponse({ type: CUserEntity, isArray: false })
   async update(
@@ -66,13 +78,19 @@ export class CUserController {
   ): Promise<APIResponseObj> {
     return HttpUtils.makeAPIResponse(
       true,
-      this.cUserService.update(+id, updateCUserDto),
+      await this.cUserService.update(+id, updateCUserDto),
     );
   }
 
+  /**
+   * 사용자 삭제
+   * @param id
+   * @returns
+   */
+  @AUTH_MUST()
   @Delete(':id')
   @ApiCreatedResponse({ type: CUserEntity, isArray: false })
   async remove(@Param('id') id: string): Promise<APIResponseObj> {
-    return HttpUtils.makeAPIResponse(true, this.cUserService.remove(+id));
+    return HttpUtils.makeAPIResponse(true, await this.cUserService.remove(+id));
   }
 }

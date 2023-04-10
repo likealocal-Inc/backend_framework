@@ -5,10 +5,9 @@ import { ExceptionCode } from './exception.code';
  * Core 에외
  */
 export class CustomException extends HttpException {
-  constructor(codeInfo: ExceptionCode, status: number) {
+  constructor(codeInfo: ExceptionCode, message = '') {
     const code = codeInfo.getCode();
-    const message = codeInfo.getMessage();
-
-    super({ code, message }, status);
+    const codeMessage = `${codeInfo.getMessage()} ${message}`;
+    super({ code, codeMessage }, codeInfo.getStatus());
   }
 }

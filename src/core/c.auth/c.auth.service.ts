@@ -48,10 +48,7 @@ export class CAuthService {
     );
     // DB 조회 사용자가 없으면 -> 예외
     if (dbUser == null) {
-      throw new HttpException(
-        ExceptionCodeList.USER.NOT_EXIST_EMAIL.getCode(),
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new CustomException(ExceptionCodeList.USER.NOT_EXIST_EMAIL);
     }
 
     // 패스워드가 정확할때
@@ -60,10 +57,7 @@ export class CAuthService {
       return dbUser;
     }
     // 패스워드 오류
-    throw new HttpException(
-      ExceptionCodeList.AUTH.WRONG_PASSWORD,
-      HttpStatus.BAD_REQUEST,
-    );
+    throw new CustomException(ExceptionCodeList.AUTH.WRONG_PASSWORD);
   }
 
   async makeResponseAfterSession(
@@ -131,10 +125,7 @@ export class CAuthService {
 
       return token;
     } catch (err) {
-      throw new CustomException(
-        ExceptionCodeList.AUTH.TOKEN_FAIL,
-        HttpStatus.UNAUTHORIZED,
-      );
+      throw new CustomException(ExceptionCodeList.AUTH.TOKEN_FAIL);
     }
   }
 }

@@ -30,10 +30,7 @@ export class CUserService {
     });
 
     if (users.length > 0) {
-      throw new CustomException(
-        ExceptionCodeList.USER.ALREADY_EXIST_USER,
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new CustomException(ExceptionCodeList.USER.ALREADY_EXIST_USER);
     } else {
       return await this.prisma.user.create({ data: createCUserDto });
     }
@@ -78,10 +75,7 @@ export class CUserService {
 
       if (dbUser === null) {
         // 권한 오류
-        throw new HttpException(
-          ExceptionCodeList.AUTH.WRONG_ROLE.getCode(),
-          HttpStatus.BAD_REQUEST,
-        );
+        throw new CustomException(ExceptionCodeList.AUTH.WRONG_ROLE);
       } else {
         for (let index = 0; index < roles.length; index++) {
           if (dbUser.role === roles[index]) {
@@ -90,10 +84,7 @@ export class CUserService {
         }
       }
     } catch {
-      throw new HttpException(
-        ExceptionCodeList.COMMON.WRONG_REQUEST.getCode(),
-        HttpStatus.BAD_REQUEST,
-      );
+      throw new CustomException(ExceptionCodeList.COMMON.WRONG_REQUEST);
     }
   }
 }

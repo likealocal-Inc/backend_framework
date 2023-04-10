@@ -1,12 +1,18 @@
-import { Controller, Get, Post, Body, Param, Delete } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import { CAuthService } from './c.auth.service';
-import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import {
+  ApiBearerAuth,
+  ApiCreatedResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CUserEntity } from '../c.user/entities/c.user.entity';
-import { HttpUtils } from 'src/libs/core/utils/http.utils';
+import { APIResponseObj, HttpUtils } from 'src/libs/core/utils/http.utils';
 import { CreateCUserDto } from '../c.user/dto/create-c.user.dto';
 import { EmailLoginDto } from './dto/email.login.dto';
 import { Role } from '@prisma/client';
 
+@ApiBearerAuth()
 @ApiTags('Auth Module')
 @Controller('c.auth')
 export class CAuthController {
@@ -15,7 +21,9 @@ export class CAuthController {
   @ApiOperation({ summary: '이메일 회원가입' })
   @ApiCreatedResponse({ type: CUserEntity })
   @Post('/join/email')
-  async joinEmail(@Body() createJoinDto: CreateCUserDto) {
+  async joinEmail(
+    @Body() createJoinDto: CreateCUserDto,
+  ): Promise<APIResponseObj> {
     const res = await this.cAuthService.joinEmail(createJoinDto);
     return await HttpUtils.makeAPIResponse(true, res);
   }
@@ -23,7 +31,9 @@ export class CAuthController {
   @ApiOperation({ summary: '이메일 로그인' })
   @ApiCreatedResponse({ type: CUserEntity })
   @Post('/login/email')
-  async loginEmail(@Body() emailLoginDto: EmailLoginDto) {
+  async loginEmail(
+    @Body() emailLoginDto: EmailLoginDto,
+  ): Promise<APIResponseObj> {
     return await HttpUtils.makeAPIResponse(
       true,
       await this.cAuthService.loginEmail(emailLoginDto, [Role.USER]),

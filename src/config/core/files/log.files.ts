@@ -10,10 +10,12 @@ export class LogFiles {
   // 로그파일 저장 경로
   file: Files;
   path: string;
+
   constructor() {
     this.file = new Files();
     this.path = DefaultConfig.files.log.error.path;
   }
+
   /**
    * 로그파일 저장
    * @param data

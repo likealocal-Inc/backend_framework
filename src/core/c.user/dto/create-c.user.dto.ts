@@ -3,8 +3,6 @@ import { Gender, Role } from '@prisma/client';
 import {
   IsBoolean,
   IsEmail,
-  IsEmpty,
-  IsNotEmpty,
   IsNumber,
   IsOptional,
   IsString,

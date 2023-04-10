@@ -1,10 +1,4 @@
-import {
-  CanActivate,
-  ExecutionContext,
-  HttpException,
-  HttpStatus,
-  Injectable,
-} from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Role } from '@prisma/client';
 import { AUTH_MUST_KEY } from '../decorators/auth.must/auth.must.decorator';
@@ -12,6 +6,7 @@ import { StringUtils } from 'src/libs/core/utils/string.utils';
 import { ExceptionCodeList } from '../exceptions/exception.code';
 import { CAuthService } from 'src/core/c.auth/c.auth.service';
 import { CSessionService } from 'src/core/c.session/c.session.service';
+import { CustomException } from '../exceptions/custom.exception';
 
 @Injectable()
 export class AuthMustGuard implements CanActivate {
@@ -40,7 +35,7 @@ export class AuthMustGuard implements CanActivate {
     // 공백이라면 에러 처리
     if (StringUtils.isEmpty(sessionKey)) {
       const code = ExceptionCodeList.AUTH.NO_SESSION_KEY;
-      throw new HttpException(code.getCode(), HttpStatus.UNAUTHORIZED);
+      throw new CustomException(ExceptionCodeList.AUTH.NO_SESSION_KEY);
     }
 
     sessionKey = sessionKey.replace('Bearer ', '');
@@ -56,8 +51,7 @@ export class AuthMustGuard implements CanActivate {
 
     // 토큰이 널이거나 공백이면 에러처리
     if (StringUtils.isEmpty(realToken)) {
-      const code = ExceptionCodeList.AUTH.WRONG_SESSION_KEY;
-      throw new HttpException(code.getCode(), HttpStatus.UNAUTHORIZED);
+      throw new CustomException(ExceptionCodeList.AUTH.NO_SESSION_KEY);
     }
 
     let res;
@@ -85,12 +79,15 @@ export class AuthMustGuard implements CanActivate {
 
       // 권한 실패 메세지가 있으면 -> 예외처리
       if (StringUtils.isNotEmpty(roleFailMessage)) {
-        throw new HttpException(roleFailMessage, HttpStatus.UNAUTHORIZED);
+        throw new CustomException(ExceptionCodeList.AUTH.WRONG_ROLE);
       } else {
         context.switchToHttp().getRequest().user = await res;
       }
     } catch (error) {
-      throw new HttpException(error.message, HttpStatus.UNAUTHORIZED);
+      throw new CustomException(
+        ExceptionCodeList.AUTH.UNAUTHORIZED,
+        error.message,
+      );
     }
     return true;
   }

@@ -9,6 +9,9 @@ import { Request, Response } from 'express';
 import { HttpUtils } from 'src/libs/core/utils/http.utils';
 import { LogFiles } from '../files/log.files';
 
+/**
+ * 에러처리 필터
+ */
 @Catch()
 export class HttpExceptionFilter implements ExceptionFilter {
   constructor(private logger: Logger) {}
@@ -29,6 +32,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     };
     const data = HttpUtils.makeAPIResponse(false, errData);
 
+    // 로그파일 작성
     new LogFiles().save(JSON.stringify(errData));
 
     response.status(500).json(data);
