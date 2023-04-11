@@ -1,6 +1,5 @@
 import { join } from 'path';
 import {
-  CacheInterceptor,
   Logger,
   MiddlewareConsumer,
   Module,
@@ -23,6 +22,8 @@ import { CAuthService } from './core/c.auth/c.auth.service';
 import { CUserModule } from './core/c.user/c.user.module';
 import { HttpExceptionFilter } from './config/core/filters/http.exception.filter';
 import { CacheModule } from './config/core/cache/cache.config';
+import { DevModule } from './sample/dev/dev.module';
+import { CEmailModule } from './core/c.email/c.email.module';
 
 @Module({
   imports: [
@@ -38,12 +39,14 @@ import { CacheModule } from './config/core/cache/cache.config';
     JwtModule,
     // CacheModule.register({ isGlobal: true }),
     CacheModule,
-    ///////////////////
 
+    /////////////////// CORE ///////////////////
     CFilesModule,
     CAuthModule,
     CSessionModule,
     CUserModule,
+    DevModule,
+    CEmailModule,
   ],
   controllers: [],
   providers: [
@@ -55,10 +58,6 @@ import { CacheModule } from './config/core/cache/cache.config';
     },
     { provide: APP_GUARD, useClass: AuthMustGuard },
     { provide: APP_FILTER, useClass: HttpExceptionFilter },
-    {
-      provide: APP_INTERCEPTOR,
-      useClass: CacheInterceptor,
-    },
   ],
 })
 export class AppModule implements NestModule {
