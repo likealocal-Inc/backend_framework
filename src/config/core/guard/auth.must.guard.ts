@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Role } from '@prisma/client';
-import { AUTH_MUST_KEY } from '../decorators/auth.must/auth.must.decorator';
+import { AUTH_MUST_KEY } from '../decorators/api/auth.must/auth.must.decorator';
 import { StringUtils } from 'src/libs/core/utils/string.utils';
 import { ExceptionCodeList } from '../exceptions/exception.code';
 import { CAuthService } from 'src/core/c.auth/c.auth.service';

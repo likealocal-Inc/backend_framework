@@ -14,7 +14,7 @@ import { UpdateCUserDto } from './dto/update-c.user.dto';
 import { APIResponseObj, HttpUtils } from 'src/libs/core/utils/http.utils';
 import { ApiBearerAuth, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
 import { CUserEntity } from './entities/c.user.entity';
-import { AUTH_MUST } from 'src/config/core/decorators/auth.must/auth.must.decorator';
+import { AUTH_MUST } from 'src/config/core/decorators/api/auth.must/auth.must.decorator';
 
 /**
  * 사용자

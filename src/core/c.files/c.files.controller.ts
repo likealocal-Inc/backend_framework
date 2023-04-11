@@ -25,7 +25,7 @@ import { DefaultConfig } from 'src/config/default.config';
 import { CFileEntity } from './entities/c.file.entity';
 import { CustomException } from 'src/config/core/exceptions/custom.exception';
 import { ExceptionCodeList } from 'src/config/core/exceptions/exception.code';
-import { AUTH_MUST } from 'src/config/core/decorators/auth.must/auth.must.decorator';
+import { AUTH_MUST } from 'src/config/core/decorators/api/auth.must/auth.must.decorator';
 
 @ApiTags('Files 처리')
 @Controller('c.files')

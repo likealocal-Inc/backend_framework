@@ -10,6 +10,7 @@ export const StringUtils = {
     }
     return true;
   },
+
   /**
    * 널/공백 체크
    * @param str
