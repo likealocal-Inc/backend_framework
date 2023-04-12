@@ -66,4 +66,7 @@ export const DefaultConfig = {
       };
     },
   },
+  schedule: {
+    jobName: { job1: 'sampleJob1', job2: 'sampleJob2' },
+  },
 };

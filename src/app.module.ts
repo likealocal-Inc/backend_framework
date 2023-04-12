@@ -22,8 +22,11 @@ import { CAuthService } from './core/c.auth/c.auth.service';
 import { CUserModule } from './core/c.user/c.user.module';
 import { HttpExceptionFilter } from './config/core/filters/http.exception.filter';
 import { CacheModule } from './config/core/cache/cache.config';
-import { DevModule } from './sample/dev/dev.module';
 import { CEmailModule } from './core/c.email/c.email.module';
+
+import { DevModule } from './sample/dev/dev.module';
+import { ScheduleModule } from '@nestjs/schedule';
+import { CScheduleModule } from './core/c.schedule/c.schedule.module';
 
 @Module({
   imports: [
@@ -32,9 +35,9 @@ import { CEmailModule } from './core/c.email/c.email.module';
       exclude: ['/api*', '/docs*'],
     }),
     ConfigModule.forRoot({
-      isGlobal: true,
       envFilePath: `.env.${process.env.NODE_ENV}`,
     }),
+    ScheduleModule.forRoot(),
     PrismaModule,
     JwtModule,
     // CacheModule.register({ isGlobal: true }),
@@ -45,8 +48,11 @@ import { CEmailModule } from './core/c.email/c.email.module';
     CAuthModule,
     CSessionModule,
     CUserModule,
-    DevModule,
     CEmailModule,
+    CScheduleModule,
+
+    /////////////////// Service ///////////////////
+    DevModule,
   ],
   controllers: [],
   providers: [
