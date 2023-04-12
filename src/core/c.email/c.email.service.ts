@@ -5,12 +5,7 @@ import * as nodemailer from 'nodemailer';
 import { DefaultConfig } from 'src/config/default.config';
 import { CustomException } from 'src/config/core/exceptions/custom.exception';
 import { ExceptionCodeList } from 'src/config/core/exceptions/exception.code';
-
-export class EmailOptions {
-  to: string;
-  subject: string;
-  html: string;
-}
+import { EmailSendDto } from './dto/email.send.dto';
 
 @Injectable()
 export class CEmailService {
@@ -25,11 +20,10 @@ export class CEmailService {
    * @param emailOption
    * @returns
    */
-  async send(emailOption: EmailOptions): Promise<any> {
+  send(emailOption: EmailSendDto): void {
     try {
-      return await this.mail.sendMail(emailOption);
+      this.mail.sendMail(emailOption);
     } catch (err) {
-      console.log(err);
       throw new CustomException(ExceptionCodeList.COMMON.EMAIL_SEND_ERROR, err);
     }
   }
