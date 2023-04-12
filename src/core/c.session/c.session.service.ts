@@ -18,7 +18,7 @@ export class CSessionService {
    * @returns
    */
   __makeSessionKey = async (userId): Promise<string> => {
-    return await SecurityUtils.makeKey(userId);
+    return await SecurityUtils.createRandomKey(userId);
   };
 
   /**

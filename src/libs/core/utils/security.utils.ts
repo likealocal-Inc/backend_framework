@@ -69,7 +69,7 @@ export const SecurityUtils = {
   /**
    * 랜덤키 만들기
    */
-  makeKey: async (data: string, size = 38): Promise<string> => {
+  createRandomKey: async (data: string, size = 38): Promise<string> => {
     const key = await createHash('sha256')
       .update(String(data))
       .digest('base64')

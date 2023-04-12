@@ -1,4 +1,4 @@
-import { Controller, Post, Body, CacheTTL, Logger } from '@nestjs/common';
+import { Controller, Post, Body, Logger } from '@nestjs/common';
 import { CAuthService } from './c.auth.service';
 import {
   ApiBearerAuth,
@@ -11,7 +11,6 @@ import { APIResponseObj, HttpUtils } from 'src/libs/core/utils/http.utils';
 import { CreateCUserDto } from '../c.user/dto/create-c.user.dto';
 import { EmailLoginDto } from './dto/email.login.dto';
 import { Role } from '@prisma/client';
-import { CacheKey } from '@nestjs/cache-manager';
 import { CronJob } from 'cron';
 import { SchedulerRegistry } from '@nestjs/schedule';
 import { DefaultConfig } from 'src/config/default.config';
