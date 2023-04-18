@@ -43,8 +43,8 @@ export const DefaultConfig = {
   // 인증관련
   auth: {
     jwt: {
-      secretKey: 'likealocal!!!jwtKey',
-      expireTime: '1h',
+      getSecretKey: () => process.env.JWT_SECRETE_KEY, // 'likealocal!!!jwtKey',
+      getExpireTime: () => process.env.JWT_EXPIRE_TIME, //'1h',
     },
   },
   security: {

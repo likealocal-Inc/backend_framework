@@ -3,7 +3,7 @@ import { CUserService } from '../c.user/c.user.service';
 import { PrismaService } from 'src/config/core/prisma/prisma.service';
 import { CreateCUserDto } from '../c.user/dto/create-c.user.dto';
 import { JwtService } from '@nestjs/jwt';
-import { JwtConfig } from 'src/config/core/authentication/jwt.config';
+// import { JwtConfig } from 'src/config/core/authentication/jwt.config';
 import { CSessionService } from '../c.session/c.session.service';
 import { CAuthUtils } from './c.auth.utils';
 import { EmailLoginDto } from './dto/email.login.dto';
@@ -94,7 +94,7 @@ export class CAuthService {
    */
   async verifyToken(token: string) {
     return this.jwtService.verify(token, {
-      secret: JwtConfig.secrete,
+      secret: DefaultConfig.auth.jwt.getSecretKey(), // JwtConfig.secrete,
     });
   }
 

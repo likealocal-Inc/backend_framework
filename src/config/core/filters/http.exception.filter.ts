@@ -20,6 +20,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
   constructor(private logger: Logger) {}
 
   catch(exception: HttpException, host: ArgumentsHost) {
+    console.log(exception);
     const ctx = host.switchToHttp();
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
@@ -48,6 +49,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       };
     }
 
+    // 반환 데이터 생성
     const data = HttpUtils.makeAPIResponse(false, errData);
 
     // 로그파일 작성
