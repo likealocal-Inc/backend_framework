@@ -43,9 +43,12 @@ export const DefaultConfig = {
   // 인증관련
   auth: {
     jwt: {
-      getSecretKey: () => process.env.JWT_SECRETE_KEY, // 'likealocal!!!jwtKey',
-      getExpireTime: () => process.env.JWT_EXPIRE_TIME, //'1h',
+      getSecretKey: () => 'likealocal!!!jwtKey',
+      getExpireTime: () => '1h',
     },
+  },
+  session: {
+    getKey: () => 'likelocal_session_key_!!!',
   },
   security: {
     getKey: () => 'likealocalkeysecury',
@@ -53,11 +56,8 @@ export const DefaultConfig = {
   redis: {
     // 레디스 접속 주소
     getURL: () => `redis://${process.env.REDIS_URL}:${process.env.REDIS_PORT}`,
-    getKEY: () => process.env.SESSION_KEY,
   },
-  session: {
-    getKEY: () => process.env.SESSION_KEY,
-  },
+
   email: {
     getInfo: () => {
       return {

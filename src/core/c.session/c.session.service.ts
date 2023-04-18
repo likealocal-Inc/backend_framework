@@ -53,7 +53,7 @@ export class CSessionService {
       [userSessionKey, this.makeTokenAndUserId({ userId, token })],
     ]);
 
-    this.redisService.setMap(DefaultConfig.session.getKEY(), map);
+    this.redisService.setMap(DefaultConfig.session.getKey(), map);
 
     return userSessionKey;
   }
@@ -65,7 +65,7 @@ export class CSessionService {
    */
   async getSessionByUserId(userId: number) {
     return this.redisService.get({
-      key: DefaultConfig.session.getKEY(),
+      key: DefaultConfig.session.getKey(),
       type: 'MAP',
       mapKey: await this.__makeSessionKey(userId),
     });
@@ -78,7 +78,7 @@ export class CSessionService {
    */
   async getSessionBySessionKey(sessionKey: string) {
     const data: any = await this.redisService.get({
-      key: DefaultConfig.session.getKEY(),
+      key: DefaultConfig.session.getKey(),
       type: 'MAP',
       mapKey: sessionKey,
     });
@@ -96,7 +96,7 @@ export class CSessionService {
    */
   async delSession(userId: number) {
     return this.redisService.delMap(
-      DefaultConfig.session.getKEY(),
+      DefaultConfig.session.getKey(),
       await this.__makeSessionKey(userId),
     );
   }
