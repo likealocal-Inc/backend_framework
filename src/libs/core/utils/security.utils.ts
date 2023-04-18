@@ -13,7 +13,7 @@ import { DefaultConfig } from 'src/config/default.config';
 export const SecurityUtils = {
   alg: 'aes-256-ctr',
 
-  _key: DefaultConfig.security.key,
+  _key: DefaultConfig.security.getKey(),
 
   key: createHash('sha256')
     .update(String('key'))

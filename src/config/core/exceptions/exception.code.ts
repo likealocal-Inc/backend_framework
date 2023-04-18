@@ -12,6 +12,7 @@ export class ExceptionCode {
 }
 
 export const ExceptionCodeList = {
+  ERROR: new ExceptionCode('ERROR', 'ERROR', HttpStatus.INTERNAL_SERVER_ERROR),
   AUTH: {
     UNAUTHORIZED: new ExceptionCode(
       'UNAUTHORIZED',

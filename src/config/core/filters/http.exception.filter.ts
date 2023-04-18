@@ -10,6 +10,7 @@ import { Request, Response } from 'express';
 import { HttpUtils } from 'src/libs/core/utils/http.utils';
 import { LogFiles } from '../files/log.files';
 import { CustomException } from '../exceptions/custom.exception';
+import { ExceptionCodeList } from '../exceptions/exception.code';
 
 /**
  * 에러처리 필터
@@ -37,12 +38,12 @@ export class HttpExceptionFilter implements ExceptionFilter {
         description: res.message ? res.message : res,
       };
     } else {
-      status = HttpStatus.INTERNAL_SERVER_ERROR;
+      status = ExceptionCodeList.ERROR.getStatus();
       errData = {
-        statusCode: exception['status'],
+        statusCode: status, //exception['status'],
         timestamp: new Date().toISOString(),
         path: request.url,
-        code: exception['code'],
+        code: ExceptionCodeList.ERROR.getCode(),
         description: null,
       };
     }
@@ -52,6 +53,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
     // 로그파일 작성
     new LogFiles().save(JSON.stringify(errData));
 
-    response.status(500).json(data);
+    // response
+    response.status(status).json(data);
   }
 }

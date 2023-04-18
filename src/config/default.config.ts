@@ -48,7 +48,7 @@ export const DefaultConfig = {
     },
   },
   security: {
-    key: 'likealocalkeysecury',
+    getKey: () => 'likealocalkeysecury',
   },
   redis: {
     // 레디스 접속 주소
